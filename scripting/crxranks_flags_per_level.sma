@@ -2,11 +2,14 @@
 #include <amxmisc>
 #include <crxranks>
 
+#define PLUGIN_VERSION "1.0"
+
 new Trie:g_tFlags
 
 public plugin_init()
 {
-	register_plugin("CRXRanks: Flags Per Level", "1.0", "OciXCrom")
+	register_plugin("CRXRanks: Flags Per Level", PLUGIN_VERSION, "OciXCrom")
+	register_cvar("CRXRanksFPL", PLUGIN_VERSION, FCVAR_SERVER|FCVAR_SPONLY|FCVAR_UNLOGGED)
 	g_tFlags = TrieCreate()
 	ReadFile()
 }
