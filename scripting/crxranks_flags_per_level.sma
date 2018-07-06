@@ -74,7 +74,6 @@ ReadFile()
 						continue
 						
 					TrieSetCell(g_tFlags, szKey, read_flags(szValue))
-					log_amx("%s = %i", szKey, read_flags(szValue))
 				}
 			}
 		}
