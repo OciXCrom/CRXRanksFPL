@@ -85,10 +85,9 @@ ReadFile()
 
 public crxranks_user_level_updated(id, iLevel, bool:bLevelUp)
 {
-	client_print(id, print_chat, "start")
 	if(!bLevelUp)
 		return
-	client_print(id, print_chat, "after levelup")	
+		
 	for(new szI[8], iUserFlags = get_user_flags(id), iLevelFlags, i; i <= iLevel; i++)
 	{
 		num_to_str(i, szI, charsmax(szI))
