@@ -2,7 +2,7 @@
 #include <amxmisc>
 #include <crxranks>
 
-#define PLUGIN_VERSION "1.0"
+#define PLUGIN_VERSION "1.0.1"
 
 new Trie:g_tFlags
 
@@ -82,11 +82,14 @@ ReadFile()
 	}
 }
 
+public client_putinserver(id)
+	crxranks_user_level_updated(id, crxranks_get_user_level(id), true)
+
 public crxranks_user_level_updated(id, iLevel, bool:bLevelUp)
 {
 	if(!bLevelUp)
 		return
-		
+
 	for(new szI[8], iUserFlags = get_user_flags(id), iLevelFlags, i; i <= iLevel; i++)
 	{
 		num_to_str(i, szI, charsmax(szI))
