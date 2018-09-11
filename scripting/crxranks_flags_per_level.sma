@@ -2,14 +2,15 @@
 #include <amxmisc>
 #include <crxranks>
 
-#define PLUGIN_VERSION "1.0.1"
+#define PLUGIN_VERSION "1.1"
 
-new Trie:g_tFlags
+new Trie:g_tFlags, g_pStrict
 
 public plugin_init()
 {
 	register_plugin("CRXRanks: Flags Per Level", PLUGIN_VERSION, "OciXCrom")
 	register_cvar("CRXRanksFPL", PLUGIN_VERSION, FCVAR_SERVER|FCVAR_SPONLY|FCVAR_UNLOGGED)
+	g_pStrict = register_cvar("crxransk_fpl_strict", "0")
 	g_tFlags = TrieCreate()
 	ReadFile()
 }
@@ -90,11 +91,26 @@ public crxranks_user_level_updated(id, iLevel, bool:bLevelUp)
 	if(!bLevelUp)
 		return
 
-	for(new szI[8], iUserFlags = get_user_flags(id), iLevelFlags, i; i <= iLevel; i++)
+	new szLevel[8], iLevelFlags, iUserFlags = get_user_flags(id)
+
+	if(get_pcvar_num(g_pStrict))
 	{
-		num_to_str(i, szI, charsmax(szI))
+		num_to_str(iLevel, szLevel, charsmax(szLevel))
+
+		if(TrieGetCell(g_tFlags, szLevel, iLevelFlags))
+		{
+			if((iUserFlags & iLevelFlags) != iLevelFlags)
+				set_user_flags(id, iLevelFlags)
+		}
+
+		return
+	}
+
+	for(new i; i <= iLevel; i++)
+	{
+		num_to_str(i, szLevel, charsmax(szLevel))
 		
-		if(TrieGetCell(g_tFlags, szI, iLevelFlags))
+		if(TrieGetCell(g_tFlags, szLevel, iLevelFlags))
 		{
 			if((iUserFlags & iLevelFlags) != iLevelFlags)
 				set_user_flags(id, iLevelFlags)
